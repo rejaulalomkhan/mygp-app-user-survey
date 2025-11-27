@@ -107,11 +107,9 @@
 
         .nav-tabs {
             border-bottom: 3px solid #e0e0e0;
-            margin-bottom: 30px;
+            /* margin-bottom: 30px; */
             background: white;
             padding: 10px 10px 0;
-            border-radius: 15px 15px 0 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .nav-tabs .nav-link {
@@ -147,6 +145,63 @@
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.2rem rgba(0, 176, 240, 0.25);
+        }
+
+        /* Radio Button Style */
+        .radio-button-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-button-group input[type="radio"] {
+            display: none;
+        }
+
+        .radio-button-group label {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            background: white;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .radio-button-group label::before {
+            content: '✓';
+            font-size: 1.3rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            margin-right: -5px;
+        }
+
+        .radio-button-group input[type="radio"]:checked + label {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 176, 240, 0.3);
+        }
+
+        .radio-button-group input[type="radio"]:checked + label::before {
+            opacity: 1;
+        }
+
+        .radio-button-group label:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 176, 240, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .radio-button-group input[type="radio"]:checked + label:hover {
+            background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%);
         }
 
         .btn-primary {
@@ -195,6 +250,13 @@
         .stat-card-content {
             flex: 1;
             text-align: left;
+        }
+
+        .stat-card-content small {
+            display: block;
+            color: #6c757d;
+            font-weight: 600;
+            margin-top: 3px;
         }
 
         .stat-number {
@@ -397,6 +459,14 @@
             .stat-number {
                 font-size: 2rem !important;
             }
+
+            .stat-card-content p {
+                font-size: 0.75rem !important;
+            }
+
+            .stat-card-content small {
+                font-size: 0.7rem !important;
+            }
             
             .header-section {
                 flex-direction: row;
@@ -490,6 +560,16 @@
 
             body {
                 padding: 10px 0;
+            }
+
+            .radio-button-group {
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .radio-button-group label {
+                padding: 10px 15px;
+                font-size: 0.95rem;
             }
 
             .chart-container {
@@ -639,22 +719,21 @@
                 <div class="glass-card">
                     <h3 class="mb-4"><i class="bi bi-person-plus-fill"></i> নতুন সার্ভে তথ্য প্রদান করুন</h3>
                     <form id="surveyForm">
+                        <!-- Personal Information Row -->
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="name" class="form-label">
                                     <i class="bi bi-person-fill"></i> নাম
                                 </label>
                                 <input type="text" class="form-control" id="name" placeholder="আপনার নাম লিখুন" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="phoneNumber" class="form-label">
                                     <i class="bi bi-telephone"></i> ফোন নম্বর
                                 </label>
                                 <input type="tel" class="form-control" id="phoneNumber" placeholder="01XXXXXXXXX" required>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="profession" class="form-label">
                                     <i class="bi bi-briefcase"></i> পেশা
                                 </label>
@@ -668,26 +747,21 @@
                                     <option value="পথচারী">পথচারী</option>
                                 </select>
                             </div>
+                        </div>
+                        <!-- MyGP Information Row -->
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">
                                     <i class="bi bi-phone"></i> MyGP অ্যাপ ব্যবহার করেন কিনা?
                                 </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="useMyGP" id="useYes" value="yes" required>
-                                    <label class="form-check-label" for="useYes">
-                                        হ্যাঁ
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="useMyGP" id="useNo" value="no" required>
-                                    <label class="form-check-label" for="useNo">
-                                        না
-                                    </label>
+                                <div class="radio-button-group">
+                                    <input type="radio" name="useMyGP" id="useYes" value="yes" required>
+                                    <label for="useYes">হ্যাঁ</label>
+                                    <input type="radio" name="useMyGP" id="useNo" value="no" required>
+                                    <label for="useNo">না</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="reason" class="form-label">
                                     <i class="bi bi-question-circle"></i> কেন ব্যবহার করেন?
                                 </label>
@@ -810,7 +884,7 @@
 
                     <!-- Summary Cards -->
                     <div class="row mb-4">
-                        <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
                             <div class="stat-card" style="border-left-color: #00b0f0;">
                                 <div class="stat-card-icon">
                                     <i class="bi bi-list-ol text-primary fs-2"></i>
@@ -821,7 +895,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
                             <div class="stat-card" style="border-left-color: #00a651;">
                                 <div class="stat-card-icon">
                                     <i class="bi bi-check-circle-fill text-success fs-2"></i>
@@ -832,25 +906,39 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #ff6b35;">
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                            <div class="stat-card" style="border-left-color: #6f42c1;">
                                 <div class="stat-card-icon">
-                                    <i class="bi bi-x-circle-fill text-danger fs-2"></i>
+                                    <i class="bi bi-database-fill fs-2" style="color: #6f42c1;"></i>
                                 </div>
                                 <div class="stat-card-content">
-                                    <div class="stat-number" id="allNonUsers">0</div>
-                                    <p class="text-muted mb-0">ব্যবহার করেন না</p>
+                                    <div class="stat-number" id="mbCheckersCount">0</div>
+                                    <small class="text-muted" id="mbCheckersPercentage">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.85rem;">মিনিট/ডাটা দেখার জন্য</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #ffc107;">
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                            <div class="stat-card" style="border-left-color: #e83e8c;">
                                 <div class="stat-card-icon">
-                                    <i class="bi bi-percent text-warning fs-2"></i>
+                                    <i class="bi bi-badge-ad-fill fs-2" style="color: #e83e8c;"></i>
                                 </div>
                                 <div class="stat-card-content">
-                                    <div class="stat-number" id="allUsagePercentage">0%</div>
-                                    <p class="text-muted mb-0">ব্যবহারের হার</p>
+                                    <div class="stat-number" id="adViewersCount">0</div>
+                                    <small class="text-muted" id="adViewersPercentage">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.85rem;">সোশ্যাল এড দেখার জন্য</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                            <div class="stat-card" style="border-left-color: #20c997;">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-check2-all fs-2" style="color: #20c997;"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="bothReasonsCount">0</div>
+                                    <small class="text-muted" id="bothReasonsPercentage">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.85rem;">উভয়</p>
                                 </div>
                             </div>
                         </div>
@@ -1171,14 +1259,30 @@
         function updateAllEntriesTab() {
             const totalEntries = surveyData.length;
             const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes').length;
-            const nonUsers = totalEntries - myGPUsers;
-            const usagePercentage = totalEntries > 0 ? Math.round((myGPUsers/totalEntries)*100) : 0;
+            
+            // কারণ ভিত্তিক গণনা
+            const mbCheckers = surveyData.filter(d => d.reason === 'মিনিট/ডাটা দেখা বা ক্রয় করার জন্য').length;
+            const adViewers = surveyData.filter(d => d.reason === 'সোশ্যাল এড দেখার জন্য').length;
+            const bothReasons = surveyData.filter(d => d.reason === 'উভয়').length;
+            
+            // শতকরা হার হিসাব (MyGP users এর ভিত্তিতে)
+            const mbCheckersPercentage = myGPUsers > 0 ? Math.round((mbCheckers/myGPUsers)*100) : 0;
+            const adViewersPercentage = myGPUsers > 0 ? Math.round((adViewers/myGPUsers)*100) : 0;
+            const bothReasonsPercentage = myGPUsers > 0 ? Math.round((bothReasons/myGPUsers)*100) : 0;
 
             // Update summary cards
             animateNumber('allTotalEntries', totalEntries);
             animateNumber('allMyGPUsers', myGPUsers);
-            animateNumber('allNonUsers', nonUsers);
-            document.getElementById('allUsagePercentage').textContent = usagePercentage + '%';
+            
+            // Update reason-based cards
+            animateNumber('mbCheckersCount', mbCheckers);
+            document.getElementById('mbCheckersPercentage').textContent = mbCheckersPercentage + '%';
+            
+            animateNumber('adViewersCount', adViewers);
+            document.getElementById('adViewersPercentage').textContent = adViewersPercentage + '%';
+            
+            animateNumber('bothReasonsCount', bothReasons);
+            document.getElementById('bothReasonsPercentage').textContent = bothReasonsPercentage + '%';
 
             // Update table
             const tbody = document.getElementById('allEntriesTableBody');
