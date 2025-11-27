@@ -572,6 +572,22 @@
                 font-size: 0.95rem;
             }
 
+            .table-responsive {
+                font-size: 0.85rem;
+            }
+
+            .table th, .table td {
+                padding: 8px;
+            }
+
+            .stat-card-content small {
+                font-size: 0.7rem !important;
+            }
+
+            .stat-card-content p {
+                font-size: 0.75rem !important;
+            }
+
             .chart-container {
                 height: 250px;
             }
@@ -702,7 +718,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button">
-                    <i class="bi bi-graph-up"></i> পেশাভিত্তিক রিপোর্ট
+                    <i class="bi bi-graph-up"></i>  রিপোর্ট
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -780,6 +796,103 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Recent Entries Section -->
+                <div class="glass-card mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0"><i class="bi bi-list-check"></i> সকল এন্ট্রি</h4>
+                        <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
+                            <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
+                        </button>
+                    </div>
+
+                    <!-- Summary Stats -->
+                    <div class="row mb-3">
+                        <div class="col-lg-3 col-md-6 col-sm-6 mb-2">
+                            <div class="stat-card" style="border-left-color: #00b0f0; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-list-ol text-primary fs-3"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="surveyTotalEntries" style="font-size: 1.8rem;">0</div>
+                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">মোট এন্ট্রি</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 mb-2">
+                            <div class="stat-card" style="border-left-color: #00a651; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="surveyMyGPUsers" style="font-size: 1.8rem;">0</div>
+                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">MyGP ব্যবহারকারী</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="stat-card" style="border-left-color: #6f42c1; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-database-fill fs-3" style="color: #6f42c1;"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="surveyMbCheckers" style="font-size: 1.8rem;">0</div>
+                                    <small class="text-muted" id="surveyMbCheckersPercent">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">মিনিট/ডাটা</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="stat-card" style="border-left-color: #e83e8c; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-badge-ad-fill fs-3" style="color: #e83e8c;"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="surveyAdViewers" style="font-size: 1.8rem;">0</div>
+                                    <small class="text-muted" id="surveyAdViewersPercent">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">সোশ্যাল এড</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+                            <div class="stat-card" style="border-left-color: #20c997; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-check2-all fs-3" style="color: #20c997;"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="surveyBothReasons" style="font-size: 1.8rem;">0</div>
+                                    <small class="text-muted" id="surveyBothReasonsPercent">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">উভয়</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Entries Table -->
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table table-striped table-hover">
+                            <thead style="background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%); color: white; position: sticky; top: 0; z-index: 10;">
+                                <tr>
+                                    <th>ক্রমিক</th>
+                                    <th>নাম</th>
+                                    <th>ফোন নম্বর</th>
+                                    <th>পেশা</th>
+                                    <th>MyGP ব্যবহার</th>
+                                    <th>কারণ</th>
+                                    <th>তারিখ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="surveyEntriesTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-5">
+                                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                        কোন ডেটা নেই
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Dashboard Tab -->
@@ -817,22 +930,24 @@
                         <div class="col-md-3 col-sm-6 mb-3">
                             <div class="stat-card">
                                 <div class="stat-card-icon">
-                                    <i class="bi bi-eye-fill text-info fs-2"></i>
+                                    <i class="bi bi-badge-ad-fill text-info fs-2"></i>
                                 </div>
                                 <div class="stat-card-content">
                                     <div class="stat-number" id="adViewers">0</div>
-                                    <p class="text-muted mb-0">এড দেখেন</p>
+                                    <small class="text-muted" id="adViewersPercentDash">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">সোশ্যাল এড দেখার জন্য</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
                             <div class="stat-card">
                                 <div class="stat-card-icon">
-                                    <i class="bi bi-speedometer2 text-warning fs-2"></i>
+                                    <i class="bi bi-database-fill text-warning fs-2"></i>
                                 </div>
                                 <div class="stat-card-content">
                                     <div class="stat-number" id="mbCheckers">0</div>
-                                    <p class="text-muted mb-0">এমবি চেকার</p>
+                                    <small class="text-muted" id="mbCheckersPercentDash">0%</small>
+                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">মিনিট/ডাটা দেখার জন্য</p>
                                 </div>
                             </div>
                         </div>
@@ -856,7 +971,7 @@
             <div class="tab-pane fade" id="reports" role="tabpanel">
                 <div class="glass-card">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 class="mb-0"><i class="bi bi-file-earmark-bar-graph"></i> পেশাভিত্তিক রিপোর্ট</h3>
+                        <h3 class="mb-0"><i class="bi bi-file-earmark-bar-graph"></i> রিপোর্ট</h3>
                         <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
                             <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
                         </button>
@@ -876,6 +991,9 @@
                             <button class="btn btn-success btn-sm me-2" onclick="downloadAllEntriesExcel()" title="এক্সেল ডাউনলোড">
                                 <i class="bi bi-file-earmark-excel"></i> এক্সেল ডাউনলোড
                             </button>
+                            <button class="btn btn-info btn-sm me-2" onclick="debugAllData()" title="Debug Data">
+                                <i class="bi bi-bug"></i> Debug
+                            </button>
                             <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
                                 <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
                             </button>
@@ -885,60 +1003,60 @@
                     <!-- Summary Cards -->
                     <div class="row mb-4">
                         <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #00b0f0;">
-                                <div class="stat-card-icon">
-                                    <i class="bi bi-list-ol text-primary fs-2"></i>
+                            <div class="stat-card" style="border-left-color: #00b0f0; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-list-ol text-primary fs-3"></i>
                                 </div>
                                 <div class="stat-card-content">
-                                    <div class="stat-number" id="allTotalEntries">0</div>
-                                    <p class="text-muted mb-0">মোট এন্ট্রি</p>
+                                    <div class="stat-number" id="allTotalEntries" style="font-size: 1.8rem;">0</div>
+                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">মোট এন্ট্রি</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #00a651;">
-                                <div class="stat-card-icon">
-                                    <i class="bi bi-check-circle-fill text-success fs-2"></i>
+                            <div class="stat-card" style="border-left-color: #00a651; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-check-circle-fill text-success fs-3"></i>
                                 </div>
                                 <div class="stat-card-content">
-                                    <div class="stat-number" id="allMyGPUsers">0</div>
-                                    <p class="text-muted mb-0">MyGP ব্যবহারকারী</p>
+                                    <div class="stat-number" id="allMyGPUsers" style="font-size: 1.8rem;">0</div>
+                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">MyGP ব্যবহারকারী</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #6f42c1;">
-                                <div class="stat-card-icon">
-                                    <i class="bi bi-database-fill fs-2" style="color: #6f42c1;"></i>
+                            <div class="stat-card" style="border-left-color: #6f42c1; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-database-fill fs-3" style="color: #6f42c1;"></i>
                                 </div>
                                 <div class="stat-card-content">
-                                    <div class="stat-number" id="mbCheckersCount">0</div>
+                                    <div class="stat-number" id="mbCheckersCount" style="font-size: 1.8rem;">0</div>
                                     <small class="text-muted" id="mbCheckersPercentage">0%</small>
-                                    <p class="text-muted mb-0" style="font-size: 0.85rem;">মিনিট/ডাটা দেখার জন্য</p>
+                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">মিনিট/ডাটা</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #e83e8c;">
-                                <div class="stat-card-icon">
-                                    <i class="bi bi-badge-ad-fill fs-2" style="color: #e83e8c;"></i>
+                            <div class="stat-card" style="border-left-color: #e83e8c; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-badge-ad-fill fs-3" style="color: #e83e8c;"></i>
                                 </div>
                                 <div class="stat-card-content">
-                                    <div class="stat-number" id="adViewersCount">0</div>
+                                    <div class="stat-number" id="adViewersCount" style="font-size: 1.8rem;">0</div>
                                     <small class="text-muted" id="adViewersPercentage">0%</small>
-                                    <p class="text-muted mb-0" style="font-size: 0.85rem;">সোশ্যাল এড দেখার জন্য</p>
+                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">সোশ্যাল এড</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #20c997;">
-                                <div class="stat-card-icon">
-                                    <i class="bi bi-check2-all fs-2" style="color: #20c997;"></i>
+                            <div class="stat-card" style="border-left-color: #20c997; padding: 15px;">
+                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-check2-all fs-3" style="color: #20c997;"></i>
                                 </div>
                                 <div class="stat-card-content">
-                                    <div class="stat-number" id="bothReasonsCount">0</div>
+                                    <div class="stat-number" id="bothReasonsCount" style="font-size: 1.8rem;">0</div>
                                     <small class="text-muted" id="bothReasonsPercentage">0%</small>
-                                    <p class="text-muted mb-0" style="font-size: 0.85rem;">উভয়</p>
+                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">উভয়</p>
                                 </div>
                             </div>
                         </div>
@@ -1014,6 +1132,7 @@
             generateProfessionReports();
             initializeCharts();
             updateAllEntriesTab();
+            updateSurveyFormTable();
             
             // Google Sheets থেকে ডেটা লোড করার চেষ্টা করা (silent mode - কোন notification দেখাবে না)
             loadFromGoogleSheets(false);
@@ -1091,6 +1210,7 @@
                             generateProfessionReports();
                             updateCharts();
                             updateAllEntriesTab();
+                            updateSurveyFormTable();
                             
                             if (showNotification) {
                                 if (surveyData.length > oldLength) {
@@ -1207,6 +1327,7 @@
             generateProfessionReports();
             updateCharts();
             updateAllEntriesTab();
+            updateSurveyFormTable();
         });
 
         // Enable/Disable Reason Field
@@ -1228,13 +1349,32 @@
         function updateDashboard() {
             const totalSurveyed = surveyData.length;
             const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes').length;
-            const adViewers = surveyData.filter(d => d.reason && d.reason.includes('এড')).length;
-            const mbCheckers = surveyData.filter(d => d.reason && d.reason.includes('এমবি')).length;
+            
+            // কারণ ভিত্তিক গণনা (সঠিক ফিল্টার)
+            const adViewers = surveyData.filter(d => d.reason === 'সোশ্যাল এড দেখার জন্য').length;
+            const mbCheckers = surveyData.filter(d => d.reason === 'মিনিট/ডাটা দেখা বা ক্রয় করার জন্য').length;
+            
+            // শতকরা হার হিসাব
+            const adViewersPercent = myGPUsers > 0 ? Math.round((adViewers/myGPUsers)*100) : 0;
+            const mbCheckersPercent = myGPUsers > 0 ? Math.round((mbCheckers/myGPUsers)*100) : 0;
+
+            console.log('=== Dashboard Stats ===');
+            console.log('Total Surveyed:', totalSurveyed);
+            console.log('MyGP Users:', myGPUsers);
+            console.log('Ad Viewers:', adViewers, `(${adViewersPercent}%)`);
+            console.log('MB Checkers:', mbCheckers, `(${mbCheckersPercent}%)`);
 
             animateNumber('totalSurveyed', totalSurveyed);
             animateNumber('myGPUsers', myGPUsers);
             animateNumber('adViewers', adViewers);
             animateNumber('mbCheckers', mbCheckers);
+            
+            // Update percentages
+            const adPercentEl = document.getElementById('adViewersPercentDash');
+            if (adPercentEl) adPercentEl.textContent = adViewersPercent + '%';
+            
+            const mbPercentEl = document.getElementById('mbCheckersPercentDash');
+            if (mbPercentEl) mbPercentEl.textContent = mbCheckersPercent + '%';
         }
 
         // Animate Numbers
@@ -1270,19 +1410,50 @@
             const adViewersPercentage = myGPUsers > 0 ? Math.round((adViewers/myGPUsers)*100) : 0;
             const bothReasonsPercentage = myGPUsers > 0 ? Math.round((bothReasons/myGPUsers)*100) : 0;
 
+            console.log('=== All Entries Tab Stats ===');
+            console.log('Total Entries:', totalEntries);
+            console.log('MyGP Users:', myGPUsers);
+            console.log('MB Checkers:', mbCheckers, `(${mbCheckersPercentage}%)`);
+            console.log('Ad Viewers:', adViewers, `(${adViewersPercentage}%)`);
+            console.log('Both Reasons:', bothReasons, `(${bothReasonsPercentage}%)`);
+
             // Update summary cards
+            console.log('Updating allTotalEntries:', totalEntries);
             animateNumber('allTotalEntries', totalEntries);
+            
+            console.log('Updating allMyGPUsers:', myGPUsers);
             animateNumber('allMyGPUsers', myGPUsers);
             
             // Update reason-based cards
+            console.log('Updating mbCheckersCount:', mbCheckers);
             animateNumber('mbCheckersCount', mbCheckers);
-            document.getElementById('mbCheckersPercentage').textContent = mbCheckersPercentage + '%';
+            const mbPercentEl = document.getElementById('mbCheckersPercentage');
+            if (mbPercentEl) {
+                mbPercentEl.textContent = mbCheckersPercentage + '%';
+                console.log('Set mbCheckersPercentage to:', mbCheckersPercentage + '%');
+            } else {
+                console.error('mbCheckersPercentage element not found!');
+            }
             
+            console.log('Updating adViewersCount:', adViewers);
             animateNumber('adViewersCount', adViewers);
-            document.getElementById('adViewersPercentage').textContent = adViewersPercentage + '%';
+            const adPercentEl = document.getElementById('adViewersPercentage');
+            if (adPercentEl) {
+                adPercentEl.textContent = adViewersPercentage + '%';
+                console.log('Set adViewersPercentage to:', adViewersPercentage + '%');
+            } else {
+                console.error('adViewersPercentage element not found!');
+            }
             
+            console.log('Updating bothReasonsCount:', bothReasons);
             animateNumber('bothReasonsCount', bothReasons);
-            document.getElementById('bothReasonsPercentage').textContent = bothReasonsPercentage + '%';
+            const bothPercentEl = document.getElementById('bothReasonsPercentage');
+            if (bothPercentEl) {
+                bothPercentEl.textContent = bothReasonsPercentage + '%';
+                console.log('Set bothReasonsPercentage to:', bothReasonsPercentage + '%');
+            } else {
+                console.error('bothReasonsPercentage element not found!');
+            }
 
             // Update table
             const tbody = document.getElementById('allEntriesTableBody');
@@ -1314,6 +1485,128 @@
                 `;
                 tbody.innerHTML += row;
             });
+        }
+
+        // Update Survey Form Tab Table
+        function updateSurveyFormTable() {
+            const totalEntries = surveyData.length;
+            const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes').length;
+            
+            // কারণ ভিত্তিক গণনা
+            const mbCheckers = surveyData.filter(d => d.reason === 'মিনিট/ডাটা দেখা বা ক্রয় করার জন্য').length;
+            const adViewers = surveyData.filter(d => d.reason === 'সোশ্যাল এড দেখার জন্য').length;
+            const bothReasons = surveyData.filter(d => d.reason === 'উভয়').length;
+            
+            // শতকরা হার হিসাব
+            const mbCheckersPercent = myGPUsers > 0 ? Math.round((mbCheckers/myGPUsers)*100) : 0;
+            const adViewersPercent = myGPUsers > 0 ? Math.round((adViewers/myGPUsers)*100) : 0;
+            const bothReasonsPercent = myGPUsers > 0 ? Math.round((bothReasons/myGPUsers)*100) : 0;
+
+            console.log('=== Survey Form Table Stats ===');
+            console.log('Total Entries:', totalEntries);
+            console.log('MyGP Users:', myGPUsers);
+            console.log('MB Checkers:', mbCheckers, `(${mbCheckersPercent}%)`);
+            console.log('Ad Viewers:', adViewers, `(${adViewersPercent}%)`);
+            console.log('Both Reasons:', bothReasons, `(${bothReasonsPercent}%)`);
+
+            // Update summary cards in survey form tab
+            animateNumber('surveyTotalEntries', totalEntries);
+            animateNumber('surveyMyGPUsers', myGPUsers);
+            
+            animateNumber('surveyMbCheckers', mbCheckers);
+            const mbPercentEl = document.getElementById('surveyMbCheckersPercent');
+            if (mbPercentEl) mbPercentEl.textContent = mbCheckersPercent + '%';
+            
+            animateNumber('surveyAdViewers', adViewers);
+            const adPercentEl = document.getElementById('surveyAdViewersPercent');
+            if (adPercentEl) adPercentEl.textContent = adViewersPercent + '%';
+            
+            animateNumber('surveyBothReasons', bothReasons);
+            const bothPercentEl = document.getElementById('surveyBothReasonsPercent');
+            if (bothPercentEl) bothPercentEl.textContent = bothReasonsPercent + '%';
+
+            // Update table
+            const tbody = document.getElementById('surveyEntriesTableBody');
+            
+            if (surveyData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-5">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            কোন ডেটা নেই
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            // Show latest entries first (reversed order)
+            [...surveyData].reverse().forEach((d, index) => {
+                const row = `
+                    <tr>
+                        <td>${surveyData.length - index}</td>
+                        <td>${d.name || '-'}</td>
+                        <td>${d.phoneNumber}</td>
+                        <td>${d.profession}</td>
+                        <td>${d.useMyGP === 'yes' ? '<span class="badge bg-success">হ্যাঁ</span>' : '<span class="badge bg-danger">না</span>'}</td>
+                        <td>${d.reason || '-'}</td>
+                        <td>${new Date(d.timestamp).toLocaleDateString('bn-BD')}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Debug All Data
+        function debugAllData() {
+            console.clear();
+            console.log('==========================================');
+            console.log('       DEBUG: ALL DATA ANALYSIS          ');
+            console.log('==========================================');
+            console.log('Survey Data:', surveyData);
+            console.log('Total Entries:', surveyData.length);
+            
+            const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes');
+            console.log('\n--- MyGP Users ---');
+            console.log('Count:', myGPUsers.length);
+            console.log('Data:', myGPUsers);
+            
+            const mbCheckers = surveyData.filter(d => d.reason === 'মিনিট/ডাটা দেখা বা ক্রয় করার জন্য');
+            console.log('\n--- মিনিট/ডাটা দেখা বা ক্রয় করার জন্য ---');
+            console.log('Count:', mbCheckers.length);
+            console.log('Percentage:', myGPUsers.length > 0 ? Math.round((mbCheckers.length/myGPUsers.length)*100) : 0, '%');
+            console.log('Data:', mbCheckers);
+            
+            const adViewers = surveyData.filter(d => d.reason === 'সোশ্যাল এড দেখার জন্য');
+            console.log('\n--- সোশ্যাল এড দেখার জন্য ---');
+            console.log('Count:', adViewers.length);
+            console.log('Percentage:', myGPUsers.length > 0 ? Math.round((adViewers.length/myGPUsers.length)*100) : 0, '%');
+            console.log('Data:', adViewers);
+            
+            const bothReasons = surveyData.filter(d => d.reason === 'উভয়');
+            console.log('\n--- উভয় ---');
+            console.log('Count:', bothReasons.length);
+            console.log('Percentage:', myGPUsers.length > 0 ? Math.round((bothReasons.length/myGPUsers.length)*100) : 0, '%');
+            console.log('Data:', bothReasons);
+            
+            console.log('\n--- Unique Reasons ---');
+            const uniqueReasons = [...new Set(surveyData.map(d => d.reason))];
+            uniqueReasons.forEach(reason => {
+                const count = surveyData.filter(d => d.reason === reason).length;
+                console.log(`"${reason}":`, count);
+            });
+            
+            console.log('\n--- DOM Elements Check ---');
+            console.log('mbCheckersCount element:', document.getElementById('mbCheckersCount'));
+            console.log('adViewersCount element:', document.getElementById('adViewersCount'));
+            console.log('bothReasonsCount element:', document.getElementById('bothReasonsCount'));
+            console.log('mbCheckersPercentage element:', document.getElementById('mbCheckersPercentage'));
+            console.log('adViewersPercentage element:', document.getElementById('adViewersPercentage'));
+            console.log('bothReasonsPercentage element:', document.getElementById('bothReasonsPercentage'));
+            
+            console.log('\n==========================================');
+            alert('Debug info logged to console. Press F12 to view.');
         }
 
         // Download All Entries as Excel
