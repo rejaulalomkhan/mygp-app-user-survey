@@ -28,37 +28,27 @@ A professional survey application for collecting and analyzing MyGP app usage da
 
 <div align="center">
 
-### Main Interface
+### Application Interface
 
 <table>
   <tr>
     <td width="50%">
-      <img src="screenshots/home.png" alt="Home Page" />
-      <p align="center"><b>Survey Form</b></p>
+      <img src="Screenshot_1.png" alt="Application Screenshot 1" width="100%" />
+      <p align="center"><b>Survey Form & Dashboard</b></p>
     </td>
     <td width="50%">
-      <img src="screenshots/dashboard.png" alt="Dashboard" />
-      <p align="center"><b>Dashboard View</b></p>
+      <img src="Screenshot_2.png" alt="Application Screenshot 2" width="100%" />
+      <p align="center"><b>Data Analytics</b></p>
     </td>
   </tr>
   <tr>
     <td width="50%">
-      <img src="screenshots/profession-reports.png" alt="Profession Reports" />
+      <img src="Screenshot_3.png" alt="Application Screenshot 3" width="100%" />
       <p align="center"><b>Profession Reports</b></p>
     </td>
     <td width="50%">
-      <img src="screenshots/all-entries.png" alt="All Entries" />
-      <p align="center"><b>All Entries</b></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <img src="screenshots/modal-detail.png" alt="Detail Modal" />
-      <p align="center"><b>Detail Modal</b></p>
-    </td>
-    <td width="50%">
-      <img src="screenshots/mobile-view.png" alt="Mobile View" />
-      <p align="center"><b>Mobile Responsive</b></p>
+      <img src="Screenshot_4.png" alt="Application Screenshot 4" width="100%" />
+      <p align="center"><b>All Entries View</b></p>
     </td>
   </tr>
 </table>
