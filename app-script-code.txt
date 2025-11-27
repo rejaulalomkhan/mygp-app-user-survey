@@ -1,0 +1,133 @@
+// Google Apps Script - সম্পূর্ণ কোড
+// এই কোড Google Sheets এর Apps Script এ পেস্ট করুন
+
+function doGet(e) {
+  var action = e.parameter.action;
+  
+  if (action === "getData") {
+    return getData();
+  } else if (action === "exportData") {
+    return getData(); // Same as getData
+  } else {
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "success",
+      "message": "MyGP Survey API is running"
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function getData() {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+    var data = sheet.getDataRange().getValues();
+    
+    var results = [];
+    
+    // প্রথম row skip করা যদি header থাকে, নাহলে i = 0 থেকে শুরু করুন
+    // এখানে i = 1 মানে প্রথম row header হিসেবে skip করা হচ্ছে
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0]) { // যদি ID থাকে
+        results.push({
+          id: data[i][0],
+          name: data[i][1] || "",
+          phoneNumber: data[i][2] || "",
+          profession: data[i][3] || "",
+          useMyGP: data[i][4] || "",
+          reason: data[i][5] || "",
+          timestamp: data[i][6] || new Date()
+        });
+      }
+    }
+    
+    Logger.log("Total entries loaded: " + results.length);
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "success",
+      "data": results
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch(error) {
+    Logger.log("Error in getData: " + error.toString());
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "error",
+      "message": error.toString(),
+      "data": []
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doPost(e) {
+  try {
+    // প্যারামিটার পাওয়া
+    var id = e.parameter.id;
+    var name = e.parameter.name || "";
+    var phoneNumber = e.parameter.phoneNumber;
+    var profession = e.parameter.profession;
+    var useMyGP = e.parameter.useMyGP;
+    var reason = e.parameter.reason || "";
+    var timestamp = new Date();
+    
+    Logger.log("Receiving data: " + JSON.stringify({
+      id: id,
+      name: name,
+      phoneNumber: phoneNumber,
+      profession: profession,
+      useMyGP: useMyGP,
+      reason: reason
+    }));
+    
+    // স্প্রেডশিটে ডেটা যোগ করা
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+    sheet.appendRow([id, name, phoneNumber, profession, useMyGP, reason, timestamp]);
+    
+    Logger.log("Data saved successfully");
+    
+    // সফল রেসপন্স পাঠানো
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "success",
+      "message": "ডেটা সফলভাবে সংরক্ষিত হয়েছে"
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch(error) {
+    Logger.log("Error in doPost: " + error.toString());
+    // ত্রুটির ক্ষেত্রে রেসপন্স পাঠানো
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "error",
+      "message": error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+/*
+IMPORTANT NOTES:
+=================
+
+1. Spreadsheet Column Order (Sheet1):
+   Column A: ID
+   Column B: Name
+   Column C: Phone Number
+   Column D: Profession
+   Column E: Use MyGP (yes/no)
+   Column F: Reason
+   Column G: Timestamp
+
+2. First row can be headers (optional):
+   ID | Name | Phone Number | Profession | Use MyGP | Reason | Timestamp
+   
+3. If you have headers in row 1, keep the loop starting from i=1
+   If NO headers, change the loop to start from i=0
+
+4. Deployment Steps:
+   - Click "Deploy" → "New deployment"
+   - Select type: "Web app"
+   - Execute as: "Me"
+   - Who has access: "Anyone"
+   - Click "Deploy"
+   - Copy the Web App URL
+   - Update the GOOGLE_SCRIPT_URL in index.html with this URL
+
+5. Testing:
+   - After deployment, test the URL:
+     https://your-script-url/exec?action=getData
+   - You should see JSON response with your data
+*/

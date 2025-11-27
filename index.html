@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyGP সার্ভে অ্যাপ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #00b0f0;
+            --gp-blue: #00b0f0;
+            --bcl-green: #00a651;
+            --secondary-color: #ff6b35;
+            --dark-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --gradient: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%);
+            --bcl-gradient: linear-gradient(135deg, #00a651 0%, #00b0f0 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SolaimanLipi', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .glass-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (min-width: 769px) {
+            .glass-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #b0f3d1 0%, #d5f4ff 100%);
+            border-radius: 20px;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo-left {
+            width: 150px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .header-logo-right {
+            width: 80px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .header-content {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .nav-tabs {
+            border-bottom: 3px solid #e0e0e0;
+            margin-bottom: 30px;
+            background: white;
+            padding: 10px 10px 0;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-tabs .nav-link {
+            color: #333;
+            background: #f5f5f5;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%);
+            color: white;
+            border: none;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: rgba(0, 176, 240, 0.2);
+            transform: translateY(-2px);
+            color: #00b0f0;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 176, 240, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 176, 240, 0.3);
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--gp-blue);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 176, 240, 0.1) 0%, rgba(0, 136, 204, 0.1) 100%);
+        }
+
+        .stat-card-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            margin: 0;
+        }
+
+        .profession-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        @media (min-width: 769px) {
+            .profession-card:hover {
+                transform: translateX(10px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        .profession-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            height: 25px;
+            border-radius: 15px;
+            background: #f0f0f0;
+            overflow: visible;
+        }
+
+        .progress-bar {
+            border-radius: 15px;
+            background: var(--gradient);
+            position: relative;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reason-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .custom-toast {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .profession-header {
+            background: var(--gradient);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            margin: -20px -20px 20px -20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profession-header h4 {
+            margin: 0;
+        }
+
+        .view-report-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .view-report-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .percentage-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--gp-blue) 0deg, var(--bcl-green) 120deg, #ffd93d 240deg, #6bcf7f 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .percentage-circle::before {
+            content: '';
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .percentage-text {
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        #allEntriesTable thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        #allEntriesTable tbody tr:hover {
+            background-color: rgba(0, 176, 240, 0.1);
+            cursor: pointer;
+        }
+
+            @media (max-width: 768px) {
+            .stat-card {
+                margin-bottom: 15px;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .stat-card-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .stat-card-icon i {
+                font-size: 1.5rem !important;
+            }
+
+            .stat-number {
+                font-size: 2rem !important;
+            }
+            
+            .header-section {
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 15px 10px;
+                margin-bottom: 20px;
+                gap: 10px;
+            }
+
+            .header-logo-left {
+                width: 80px;
+                margin-bottom: 0;
+            }
+
+            .header-logo-right {
+                width: 50px;
+                margin-bottom: 0;
+            }
+
+            .header-content {
+                flex: 1;
+                min-width: 100%;
+                padding: 10px 0 0;
+                order: 3;
+            }
+
+            .header-content h1 {
+                font-size: 1.3rem;
+                margin-bottom: 5px;
+            }
+
+            .header-content .lead {
+                font-size: 0.85rem;
+            }
+            
+            .glass-card {
+                padding: 15px;
+            }
+
+            .nav-tabs {
+                padding: 5px;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-tabs .nav-link {
+                font-size: 0.85rem;
+                padding: 10px 15px;
+                display: inline-block;
+            }
+
+            .profession-card {
+                padding: 15px;
+            }
+
+            .profession-header {
+                flex-direction: row;
+                padding: 15px;
+            }
+
+            .profession-header h4 {
+                font-size: 1.1rem;
+            }
+
+            .percentage-circle {
+                width: 80px;
+                height: 80px;
+            }
+
+            .percentage-circle::before {
+                width: 60px;
+                height: 60px;
+            }
+
+            .percentage-text {
+                font-size: 1rem;
+            }
+
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.2rem;
+            }
+
+            .main-container {
+                padding: 0 10px;
+            }
+
+            body {
+                padding: 10px 0;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .table {
+                font-size: 0.85rem;
+            }
+
+            .form-label {
+                font-size: 0.9rem;
+            }
+
+            .form-control, .form-select {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .btn-primary {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .footer a {
+            color: #00b0f0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #0088cc;
+            text-decoration: underline;
+        }
+
+        /* Loader Styles */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-overlay.show {
+            display: flex;
+        }
+
+        .loader-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #00b0f0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .loader-subtext {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <img src="assets/bclgroup-lgoo.png" alt="BCL Group" class="header-logo-left">
+            <div class="header-content">
+                <h1 class="mb-2"><i class="bi bi-clipboard-data"></i> MyGP সার্ভে অ্যাপ্লিকেশন</h1>
+                <p class="lead mb-0">পেশাভিত্তিক MyGP ব্যবহার সার্ভে এবং রিপোর্টিং সিস্টেম</p>
+            </div>
+            <img src="assets/Grameenphone_Logo.png" alt="Grameenphone" class="header-logo-right">
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="survey-tab" data-bs-toggle="tab" data-bs-target="#survey" type="button">
+                    <i class="bi bi-clipboard-plus"></i> সার্ভে ফর্ম
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button">
+                    <i class="bi bi-speedometer2"></i> ড্যাশবোর্ড
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button">
+                    <i class="bi bi-graph-up"></i> পেশাভিত্তিক রিপোর্ট
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="all-entries-tab" data-bs-toggle="tab" data-bs-target="#all-entries" type="button">
+                    <i class="bi bi-table"></i> সকল এন্ট্রি
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="mainTabContent">
+            <!-- Survey Form Tab -->
+            <div class="tab-pane fade show active" id="survey" role="tabpanel">
+                <div class="glass-card">
+                    <h3 class="mb-4"><i class="bi bi-person-plus-fill"></i> নতুন সার্ভে তথ্য প্রদান করুন</h3>
+                    <form id="surveyForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">
+                                    <i class="bi bi-person-fill"></i> নাম
+                                </label>
+                                <input type="text" class="form-control" id="name" placeholder="আপনার নাম লিখুন" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phoneNumber" class="form-label">
+                                    <i class="bi bi-telephone"></i> ফোন নম্বর
+                                </label>
+                                <input type="tel" class="form-control" id="phoneNumber" placeholder="01XXXXXXXXX" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="profession" class="form-label">
+                                    <i class="bi bi-briefcase"></i> পেশা
+                                </label>
+                                <select class="form-select" id="profession" required>
+                                    <option value="">পেশা নির্বাচন করুন</option>
+                                    <option value="ডাক্তার">ডাক্তার</option>
+                                    <option value="ইঞ্জিনিয়ার">ইঞ্জিনিয়ার</option>
+                                    <option value="ছাত্র">ছাত্র</option>
+                                    <option value="চাকুরিজীবি">চাকুরিজীবি</option>
+                                    <option value="ব্যবসায়ী">ব্যবসায়ী</option>
+                                    <option value="পথচারী">পথচারী</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="bi bi-phone"></i> MyGP অ্যাপ ব্যবহার করেন কিনা?
+                                </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="useMyGP" id="useYes" value="yes" required>
+                                    <label class="form-check-label" for="useYes">
+                                        হ্যাঁ
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="useMyGP" id="useNo" value="no" required>
+                                    <label class="form-check-label" for="useNo">
+                                        না
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="reason" class="form-label">
+                                    <i class="bi bi-question-circle"></i> কেন ব্যবহার করেন?
+                                </label>
+                                <select class="form-select" id="reason" disabled>
+                                    <option value="">কারণ নির্বাচন করুন</option>
+                                    <option value="মিনিট/ডাটা দেখা বা ক্রয় করার জন্য">মিনিট/ডাটা দেখা বা ক্রয় করার জন্য</option> 
+                                    <option value="সোশ্যাল এড দেখার জন্য">সোশ্যাল এড দেখার জন্য</option>
+                                    <option value="উভয়">উভয়</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle"></i> সাবমিট করুন
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-pane fade" id="dashboard" role="tabpanel">
+                <div class="glass-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0"><i class="bi bi-graph-up-arrow"></i> সার্ভে ড্যাশবোর্ড</h3>
+                        <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
+                            <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
+                        </button>
+                    </div>
+                    <div class="row" id="dashboardStats">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-people-fill text-primary fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="totalSurveyed">0</div>
+                                    <p class="text-muted mb-0">মোট সার্ভেকৃত</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-phone-fill text-success fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="myGPUsers">0</div>
+                                    <p class="text-muted mb-0">MyGP ব্যবহারকারী</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-eye-fill text-info fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="adViewers">0</div>
+                                    <p class="text-muted mb-0">এড দেখেন</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-speedometer2 text-warning fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="mbCheckers">0</div>
+                                    <p class="text-muted mb-0">এমবি চেকার</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="chart-container">
+                                <canvas id="professionChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="chart-container">
+                                <canvas id="usageChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div class="tab-pane fade" id="reports" role="tabpanel">
+                <div class="glass-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0"><i class="bi bi-file-earmark-bar-graph"></i> পেশাভিত্তিক রিপোর্ট</h3>
+                        <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
+                            <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
+                        </button>
+                    </div>
+                    <div id="professionReports">
+                        <!-- Profession cards will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Entries Tab -->
+            <div class="tab-pane fade" id="all-entries" role="tabpanel">
+                <div class="glass-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0"><i class="bi bi-table"></i> সকল এন্ট্রি</h3>
+                        <div>
+                            <button class="btn btn-success btn-sm me-2" onclick="downloadAllEntriesExcel()" title="এক্সেল ডাউনলোড">
+                                <i class="bi bi-file-earmark-excel"></i> এক্সেল ডাউনলোড
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
+                                <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card" style="border-left-color: #00b0f0;">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-list-ol text-primary fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="allTotalEntries">0</div>
+                                    <p class="text-muted mb-0">মোট এন্ট্রি</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card" style="border-left-color: #00a651;">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-check-circle-fill text-success fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="allMyGPUsers">0</div>
+                                    <p class="text-muted mb-0">MyGP ব্যবহারকারী</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card" style="border-left-color: #ff6b35;">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-x-circle-fill text-danger fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="allNonUsers">0</div>
+                                    <p class="text-muted mb-0">ব্যবহার করেন না</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card" style="border-left-color: #ffc107;">
+                                <div class="stat-card-icon">
+                                    <i class="bi bi-percent text-warning fs-2"></i>
+                                </div>
+                                <div class="stat-card-content">
+                                    <div class="stat-number" id="allUsagePercentage">0%</div>
+                                    <p class="text-muted mb-0">ব্যবহারের হার</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- All Entries Table -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="allEntriesTable">
+                            <thead style="background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%); color: white;">
+                                <tr>
+                                    <th>ক্রমিক</th>
+                                    <th>নাম</th>
+                                    <th>ফোন নম্বর</th>
+                                    <th>পেশা</th>
+                                    <th>MyGP ব্যবহার</th>
+                                    <th>কারণ</th>
+                                    <th>তারিখ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allEntriesTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-5">
+                                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                        কোন ডেটা নেই
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="mb-0">
+                <i class="bi bi-code-slash"></i> Developed by: <a href="https://fb.com/armanaazij" target="_blank">Arman Azij</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Floating Button -->
+    <button class="floating-btn" onclick="exportData()">
+        <i class="bi bi-download"></i>
+    </button>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Loader Overlay -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <div class="loader-text">সাবমিট হচ্ছে...</div>
+            <div class="loader-subtext">অনুগ্রহ করে অপেক্ষা করুন</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Google Apps Script Web App URL (আপনার URL এখানে যোগ করা হয়েছে)
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVBtlDbLdAmpDpkSary5JSd_ZVuVh30S1OTqRt7duntTGokGMQpVVbMzyj_PD5XJnaCg/exec";
+
+        // Data Management
+        let surveyData = [];
+        let autoRefreshInterval = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // localStorage থেকে ডেটা লোড করা (যদি ইন্টারনেট না থাকে)
+            surveyData = JSON.parse(localStorage.getItem('surveyData')) || [];
+            updateDashboard();
+            generateProfessionReports();
+            initializeCharts();
+            updateAllEntriesTab();
+            
+            // Google Sheets থেকে ডেটা লোড করার চেষ্টা করা (silent mode - কোন notification দেখাবে না)
+            loadFromGoogleSheets(false);
+            
+            // Auto-refresh: প্রতি 30 সেকেন্ডে ডেটা লোড করা
+            startAutoRefresh();
+        });
+
+        // Auto-refresh শুরু করা
+        function startAutoRefresh() {
+            // আগের interval clear করা
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+            
+            // প্রতি 30 সেকেন্ডে auto-refresh
+            autoRefreshInterval = setInterval(function() {
+                console.log('🔄 Auto-refreshing data...');
+                loadFromGoogleSheets(false); // silent mode
+            }, 30000); // 30 seconds
+            
+            console.log('✓ Auto-refresh started (every 30 seconds)');
+        }
+
+        // Auto-refresh বন্ধ করা (যদি দরকার হয়)
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+                console.log('Auto-refresh stopped');
+            }
+        }
+
+        // Google Sheets থেকে ডেটা লোড করা
+        async function loadFromGoogleSheets(showNotification = true) {
+            try {
+                console.log('=== Loading data from Google Sheets ===');
+                console.log('URL:', `${GOOGLE_SCRIPT_URL}?action=getData`);
+                console.log('Timestamp:', new Date().toISOString());
+                
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getData&t=${Date.now()}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    cache: 'no-cache'
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response OK:', response.ok);
+                
+                if (response.ok) {
+                    const textResponse = await response.text();
+                    console.log('Raw response length:', textResponse.length);
+                    console.log('Raw response (first 500 chars):', textResponse.substring(0, 500));
+                    
+                    try {
+                        const data = JSON.parse(textResponse);
+                        console.log('Parsed data status:', data.status);
+                        console.log('Data array length:', data.data ? data.data.length : 0);
+                        
+                        if (data.status === "success" && data.data && Array.isArray(data.data)) {
+                            // আগের ডেটার সাথে compare করা
+                            const oldLength = surveyData.length;
+                            surveyData = data.data;
+                            localStorage.setItem('surveyData', JSON.stringify(surveyData));
+                            
+                            console.log(`✓ Survey data loaded successfully!`);
+                            console.log(`  - Previous entries: ${oldLength}`);
+                            console.log(`  - Current entries: ${surveyData.length}`);
+                            console.log(`  - New entries: ${surveyData.length - oldLength}`);
+                            
+                            // UI Update করা
+                            updateDashboard();
+                            generateProfessionReports();
+                            updateCharts();
+                            updateAllEntriesTab();
+                            
+                            if (showNotification) {
+                                if (surveyData.length > oldLength) {
+                                    showToast(`✓ ${surveyData.length} টি এন্ট্রি লোড হয়েছে (${surveyData.length - oldLength} টি নতুন)`, 'success');
+                                } else {
+                                    showToast(`✓ ${surveyData.length} টি এন্ট্রি লোড হয়েছে`, 'success');
+                                }
+                            }
+                            
+                            console.log('=== Data loading completed successfully ===');
+                        } else if (data.status === "error") {
+                            console.error('Server returned error:', data.message);
+                            if (showNotification) {
+                                showToast('সার্ভার এরর: ' + data.message, 'error');
+                            }
+                        } else {
+                            console.warn('Invalid data format:', data);
+                            if (showNotification) {
+                                showToast('ডেটা ফরম্যাট সঠিক নয়', 'warning');
+                            }
+                        }
+                    } catch (parseError) {
+                        console.error('❌ JSON parse error:', parseError);
+                        console.error('Response text:', textResponse);
+                        if (showNotification) {
+                            showToast('সার্ভার থেকে সঠিক JSON ডেটা আসেনি', 'error');
+                        }
+                    }
+                } else {
+                    const errorText = await response.text();
+                    console.error('❌ Response not OK');
+                    console.error('Status:', response.status);
+                    console.error('Error text:', errorText);
+                    if (showNotification) {
+                        showToast(`সার্ভার এরর (${response.status})`, 'error');
+                    }
+                }
+            } catch (error) {
+                console.error("❌ Google Sheets থেকে ডেটা লোড করতে সমস্যা:");
+                console.error("Error message:", error.message);
+                console.error("Error stack:", error.stack);
+                
+                // শুধুমাত্র ম্যানুয়াল রিফ্রেশের সময় error দেখাবে
+                if (showNotification) {
+                    showToast('ইন্টারনেট সংযোগ বা সার্ভার সমস্যা আছে', 'warning');
+                }
+            }
+        }
+
+        // Show Loader
+        function showLoader() {
+            document.getElementById('loaderOverlay').classList.add('show');
+        }
+
+        // Hide Loader
+        function hideLoader() {
+            document.getElementById('loaderOverlay').classList.remove('show');
+        }
+
+        // Form Handling
+        document.getElementById('surveyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loader
+            showLoader();
+            
+            const formData = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                profession: document.getElementById('profession').value,
+                useMyGP: document.querySelector('input[name="useMyGP"]:checked').value,
+                reason: document.getElementById('reason').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // প্রথমে localStorage এ সংরক্ষণ করা
+            surveyData.push(formData);
+            localStorage.setItem('surveyData', JSON.stringify(surveyData));
+            
+            // Google Sheets এ ডেটা পাঠানোর চেষ্টা করা
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(formData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.status === "success") {
+                        hideLoader();
+                        showToast('সার্ভে সফলভাবে জমা হয়েছে এবং Google Sheets এ সংরক্ষিত হয়েছে!', 'success');
+                    } else {
+                        hideLoader();
+                        showToast('সার্ভে জমা হয়েছে, কিন্তু Google Sheets এ সংরক্ষণ করতে সমস্যা হয়েছে: ' + result.message, 'warning');
+                    }
+                } else {
+                    hideLoader();
+                    showToast('সার্ভে জমা হয়েছে, কিন্তু Google Sheets এ সংরক্ষণ করতে সমস্যা হয়েছে', 'warning');
+                }
+            } catch (error) {
+                console.error("Google Sheets এ ডেটা পাঠাতে সমস্যা:", error);
+                hideLoader();
+                showToast('সার্ভে জমা হয়েছে, কিন্তু ইন্টারনেট সংযোগ সমস্যার কারণে Google Sheets এ সংরক্ষণ করা যায়নি', 'warning');
+            }
+            
+            this.reset();
+            document.getElementById('reason').disabled = true;
+            
+            updateDashboard();
+            generateProfessionReports();
+            updateCharts();
+            updateAllEntriesTab();
+        });
+
+        // Enable/Disable Reason Field
+        document.querySelectorAll('input[name="useMyGP"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const reasonField = document.getElementById('reason');
+                if (this.value === 'yes') {
+                    reasonField.disabled = false;
+                    reasonField.required = true;
+                } else {
+                    reasonField.disabled = true;
+                    reasonField.required = false;
+                    reasonField.value = '';
+                }
+            });
+        });
+
+        // Update Dashboard
+        function updateDashboard() {
+            const totalSurveyed = surveyData.length;
+            const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes').length;
+            const adViewers = surveyData.filter(d => d.reason && d.reason.includes('এড')).length;
+            const mbCheckers = surveyData.filter(d => d.reason && d.reason.includes('এমবি')).length;
+
+            animateNumber('totalSurveyed', totalSurveyed);
+            animateNumber('myGPUsers', myGPUsers);
+            animateNumber('adViewers', adViewers);
+            animateNumber('mbCheckers', mbCheckers);
+        }
+
+        // Animate Numbers
+        function animateNumber(elementId, target) {
+            const element = document.getElementById(elementId);
+            const start = parseInt(element.textContent) || 0;
+            const increment = (target - start) / 20;
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= target) || (increment < 0 && current <= target)) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.round(current);
+                }
+            }, 50);
+        }
+
+        // Update All Entries Tab
+        function updateAllEntriesTab() {
+            const totalEntries = surveyData.length;
+            const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes').length;
+            const nonUsers = totalEntries - myGPUsers;
+            const usagePercentage = totalEntries > 0 ? Math.round((myGPUsers/totalEntries)*100) : 0;
+
+            // Update summary cards
+            animateNumber('allTotalEntries', totalEntries);
+            animateNumber('allMyGPUsers', myGPUsers);
+            animateNumber('allNonUsers', nonUsers);
+            document.getElementById('allUsagePercentage').textContent = usagePercentage + '%';
+
+            // Update table
+            const tbody = document.getElementById('allEntriesTableBody');
+            
+            if (surveyData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-5">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            কোন ডেটা নেই
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            surveyData.forEach((d, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${d.name || '-'}</td>
+                        <td>${d.phoneNumber}</td>
+                        <td>${d.profession}</td>
+                        <td>${d.useMyGP === 'yes' ? '<span class="badge bg-success">হ্যাঁ</span>' : '<span class="badge bg-danger">না</span>'}</td>
+                        <td>${d.reason || '-'}</td>
+                        <td>${new Date(d.timestamp).toLocaleDateString('bn-BD')}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Download All Entries as Excel
+        function downloadAllEntriesExcel() {
+            console.log('Download Excel clicked. Survey data length:', surveyData.length);
+            console.log('Survey data:', surveyData);
+            
+            if (surveyData.length === 0) {
+                showToast('কোন ডেটা নেই। প্রথমে ডেটা লোড করুন।', 'warning');
+                return;
+            }
+
+            try {
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+
+                console.log('Creating Excel with', surveyData.length, 'entries');
+
+                // All Data Sheet
+                const allDataRows = [
+                    ['ক্রমিক', 'নাম', 'ফোন নম্বর', 'পেশা', 'MyGP ব্যবহার', 'কারণ', 'তারিখ']
+                ];
+
+                surveyData.forEach((d, index) => {
+                    allDataRows.push([
+                        index + 1,
+                        d.name || '-',
+                        d.phoneNumber || '-',
+                        d.profession || '-',
+                        d.useMyGP === 'yes' ? 'হ্যাঁ' : 'না',
+                        d.reason || '-',
+                        d.timestamp ? new Date(d.timestamp).toLocaleDateString('bn-BD') : '-'
+                    ]);
+                });
+
+                console.log('All data rows:', allDataRows.length, 'rows (including header)');
+
+                const allDataSheet = XLSX.utils.aoa_to_sheet(allDataRows);
+                allDataSheet['!cols'] = [
+                    { wch: 10 },
+                    { wch: 20 },
+                    { wch: 15 },
+                    { wch: 15 },
+                    { wch: 15 },
+                    { wch: 35 },
+                    { wch: 15 }
+                ];
+
+                // Add sheet to workbook
+                XLSX.utils.book_append_sheet(wb, allDataSheet, 'সকল এন্ট্রি');
+
+                console.log('Workbook created with sheet:', wb.SheetNames);
+
+                // Download
+                const filename = `All_Entries_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
+                XLSX.writeFile(wb, filename);
+                
+                console.log('Excel file downloaded successfully with', surveyData.length, 'entries');
+                showToast(`${surveyData.length} টি এন্ট্রি সহ এক্সেল ডাউনলোড হয়েছে!`, 'success');
+            } catch (error) {
+                console.error('Excel download error:', error);
+                showToast('এক্সেল ডাউনলোড করতে সমস্যা হয়েছে: ' + error.message, 'error');
+            }
+        }
+
+
+        // Generate Profession Reports
+        function generateProfessionReports() {
+            const professions = ['ডাক্তার', 'ইঞ্জিনিয়ার', 'ছাত্র', 'চাকুরিজীবি', 'ব্যবসায়ী', 'পথচারী'];
+            const icons = {
+                'ডাক্তার': 'bi-hospital',
+                'ইঞ্জিনিয়ার': 'bi-gear',
+                'ছাত্র': 'bi-mortarboard',
+                'চাকুরিজীবি': 'bi-briefcase',
+                'ব্যবসায়ী': 'bi-currency-dollar',
+                'পথচারী': 'bi-person-walking'
+            };
+
+            const reportsContainer = document.getElementById('professionReports');
+            reportsContainer.innerHTML = '';
+
+            professions.forEach(profession => {
+                const professionData = surveyData.filter(d => d.profession === profession);
+                const total = professionData.length;
+                const myGPUsers = professionData.filter(d => d.useMyGP === 'yes').length;
+                const adViewers = professionData.filter(d => d.reason && d.reason.includes('এড')).length;
+                const mbCheckers = professionData.filter(d => d.reason && d.reason.includes('এমবি')).length;
+
+                const card = `
+                    <div class="profession-card" onclick="showProfessionDetail('${profession}')">
+                        <div class="profession-header">
+                            <h4><i class="bi ${icons[profession]}"></i> ${profession}</h4>
+                            <i class="bi bi-file-earmark-text view-report-icon" title="রিপোর্ট দেখুন"></i>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <div class="percentage-circle">
+                                        <span class="percentage-text">${total}</span>
+                                    </div>
+                                    <p class="mb-0"><strong>মোট সার্ভে</strong></p>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="mb-3">
+                                    <small class="text-muted">MyGP ব্যবহারকারী</small>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: ${total > 0 ? (myGPUsers/total)*100 : 0}%">
+                                            ${total > 0 ? Math.round((myGPUsers/total)*100) : 0}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted">এড দেখেন</small>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" style="width: ${total > 0 ? (adViewers/total)*100 : 0}%">
+                                            ${total > 0 ? Math.round((adViewers/total)*100) : 0}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted">এমবি চেক করেন</small>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" style="width: ${total > 0 ? (mbCheckers/total)*100 : 0}%">
+                                            ${total > 0 ? Math.round((mbCheckers/total)*100) : 0}%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                reportsContainer.innerHTML += card;
+            });
+        }
+
+        // Show Profession Detail Modal
+        function showProfessionDetail(profession) {
+            const professionData = surveyData.filter(d => d.profession === profession);
+            const modal = `
+                <div class="modal fade" id="professionModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%); color: white;">
+                                <h5 class="modal-title"><i class="bi bi-file-earmark-bar-graph"></i> ${profession} - বিস্তারিত রিপোর্ট</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover" id="professionTable">
+                                        <thead style="background: #f8f9fa;">
+                                            <tr>
+                                                <th>ক্রমিক</th>
+                                                <th>নাম</th>
+                                                <th>ফোন নম্বর</th>
+                                                <th>MyGP ব্যবহার</th>
+                                                <th>কারণ</th>
+                                                <th>তারিখ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${professionData.map((d, index) => `
+                                                <tr>
+                                                    <td>${index + 1}</td>
+                                                    <td>${d.name || '-'}</td>
+                                                    <td>${d.phoneNumber}</td>
+                                                    <td>${d.useMyGP === 'yes' ? '<span class="badge bg-success">হ্যাঁ</span>' : '<span class="badge bg-danger">না</span>'}</td>
+                                                    <td>${d.reason || '-'}</td>
+                                                    <td>${new Date(d.timestamp).toLocaleDateString('bn-BD')}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="bi bi-x-circle"></i> বন্ধ করুন
+                                </button>
+                                <button type="button" class="btn btn-success" onclick="downloadProfessionReport('${profession}')">
+                                    <i class="bi bi-file-earmark-excel"></i> এক্সেল ডাউনলোড
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modal);
+            const modalElement = new bootstrap.Modal(document.getElementById('professionModal'));
+            modalElement.show();
+            
+            document.getElementById('professionModal').addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            });
+        }
+
+        // Download Profession Report as Excel
+        function downloadProfessionReport(profession) {
+            const professionData = surveyData.filter(d => d.profession === profession);
+            
+            console.log('Profession download:', profession, 'Data count:', professionData.length);
+            
+            if (professionData.length === 0) {
+                showToast('এই পেশার জন্য কোন ডেটা নেই', 'warning');
+                return;
+            }
+
+            try {
+                console.log(`Creating Excel for ${profession} with ${professionData.length} entries`);
+
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+
+                // Data Sheet
+                const dataRows = [
+                    ['ক্রমিক', 'নাম', 'ফোন নম্বর', 'MyGP ব্যবহার', 'কারণ', 'তারিখ']
+                ];
+
+                professionData.forEach((d, index) => {
+                    dataRows.push([
+                        index + 1,
+                        d.name || '-',
+                        d.phoneNumber || '-',
+                        d.useMyGP === 'yes' ? 'হ্যাঁ' : 'না',
+                        d.reason || '-',
+                        d.timestamp ? new Date(d.timestamp).toLocaleDateString('bn-BD') : '-'
+                    ]);
+                });
+
+                console.log('Data rows:', dataRows.length, 'rows (including header)');
+
+                const dataSheet = XLSX.utils.aoa_to_sheet(dataRows);
+                dataSheet['!cols'] = [
+                    { wch: 10 },
+                    { wch: 20 },
+                    { wch: 15 },
+                    { wch: 15 },
+                    { wch: 35 },
+                    { wch: 15 }
+                ];
+
+                // Add sheet to workbook
+                XLSX.utils.book_append_sheet(wb, dataSheet, profession);
+
+                console.log('Workbook created with sheet:', wb.SheetNames);
+
+                // Generate filename
+                const filename = `${profession}_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+                // Download
+                XLSX.writeFile(wb, filename);
+                
+                console.log(`Excel report for ${profession} downloaded successfully with ${professionData.length} entries`);
+                showToast(`${profession} - ${professionData.length} টি এন্ট্রি সহ রিপোর্ট ডাউনলোড হয়েছে!`, 'success');
+            } catch (error) {
+                console.error('Profession Excel download error:', error);
+                showToast('রিপোর্ট ডাউনলোড করতে সমস্যা হয়েছে: ' + error.message, 'error');
+            }
+        }
+
+
+        // Initialize Charts
+        let professionChart, usageChart;
+
+        function initializeCharts() {
+            // Profession Distribution Chart
+            const ctx1 = document.getElementById('professionChart').getContext('2d');
+            professionChart = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['ডাক্তার', 'ইঞ্জিনিয়ার', 'ছাত্র', 'চাকুরিজীবি', 'ব্যবসায়ী', 'পথচারী'],
+                    datasets: [{
+                        data: getProfessionData(),
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'পেশাভিত্তিক বিতরণ'
+                        }
+                    }
+                }
+            });
+
+            // Usage Reason Chart
+            const ctx2 = document.getElementById('usageChart').getContext('2d');
+            usageChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['মিনিট/এমবি চেক', 'এড দেখা', 'উভয়'],
+                    datasets: [{
+                        label: 'ব্যবহারকারী',
+                        data: getUsageData(),
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(255, 206, 86, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'MyGP ব্যবহারের কারণ'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function getProfessionData() {
+            const professions = ['ডাক্তার', 'ইঞ্জিনিয়ার', 'ছাত্র', 'চাকুরিজীবি', 'ব্যবসায়ী', 'পথচারী'];
+            return professions.map(p => surveyData.filter(d => d.profession === p).length);
+        }
+
+        function getUsageData() {
+            const mbCheckers = surveyData.filter(d => d.reason && d.reason.includes('এমবি')).length;
+            const adViewers = surveyData.filter(d => d.reason && d.reason.includes('এড')).length;
+            const both = surveyData.filter(d => d.reason === 'উভয়').length;
+            return [mbCheckers - both, adViewers - both, both];
+        }
+
+        function updateCharts() {
+            if (professionChart) {
+                professionChart.data.datasets[0].data = getProfessionData();
+                professionChart.update();
+            }
+            if (usageChart) {
+                usageChart.data.datasets[0].data = getUsageData();
+                usageChart.update();
+            }
+        }
+
+        // Export Overall Report as Excel
+        async function exportData() {
+            if (surveyData.length === 0) {
+                showToast('কোন ডেটা নেই', 'warning');
+                return;
+            }
+
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+
+            // Summary Statistics Sheet
+            const professions = ['ডাক্তার', 'ইঞ্জিনিয়ার', 'ছাত্র', 'চাকুরিজীবি', 'ব্যবসায়ী', 'পথচারী'];
+            
+            const summaryData = [
+                ['MyGP সার্ভে সামগ্রিক রিপোর্ট', '', '', '', '', ''],
+                ['রিপোর্ট তারিখ:', new Date().toLocaleDateString('bn-BD'), '', '', '', ''],
+                ['মোট সার্ভে:', surveyData.length, '', '', '', ''],
+                ['', '', '', '', '', ''],
+                ['পেশা', 'মোট সার্ভে', 'MyGP ব্যবহারকারী', 'এড দেখেন', 'এমবি চেক করেন', 'ব্যবহারের হার']
+            ];
+
+            professions.forEach(profession => {
+                const profData = surveyData.filter(d => d.profession === profession);
+                const total = profData.length;
+                const myGPUsers = profData.filter(d => d.useMyGP === 'yes').length;
+                const adViewers = profData.filter(d => d.reason && d.reason.includes('এড')).length;
+                const mbCheckers = profData.filter(d => d.reason && d.reason.includes('এমবি')).length;
+                const percentage = total > 0 ? Math.round((myGPUsers/total)*100) : 0;
+
+                summaryData.push([
+                    profession,
+                    total,
+                    myGPUsers,
+                    adViewers,
+                    mbCheckers,
+                    `${percentage}%`
+                ]);
+            });
+
+            // Add overall statistics
+            const totalSurveyed = surveyData.length;
+            const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes').length;
+            const adViewers = surveyData.filter(d => d.reason && d.reason.includes('এড')).length;
+            const mbCheckers = surveyData.filter(d => d.reason && d.reason.includes('এমবি')).length;
+
+            summaryData.push(['', '', '', '', '', '']);
+            summaryData.push(['সর্বমোট', totalSurveyed, myGPUsers, adViewers, mbCheckers, `${totalSurveyed > 0 ? Math.round((myGPUsers/totalSurveyed)*100) : 0}%`]);
+
+            const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+
+            // Set column widths
+            summarySheet['!cols'] = [
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 }
+            ];
+
+            // All Data Sheet
+            const allDataHeaders = [['ক্রমিক', 'নাম', 'ফোন নম্বর', 'পেশা', 'MyGP ব্যবহার', 'কারণ', 'তারিখ']];
+            
+            const allData = surveyData.map((d, index) => [
+                index + 1,
+                d.name || '-',
+                d.phoneNumber,
+                d.profession,
+                d.useMyGP === 'yes' ? 'হ্যাঁ' : 'না',
+                d.reason || '-',
+                new Date(d.timestamp).toLocaleDateString('bn-BD')
+            ]);
+
+            const allDataSheet = XLSX.utils.aoa_to_sheet([...allDataHeaders, ...allData]);
+
+            // Set column widths for all data
+            allDataSheet['!cols'] = [
+                { wch: 8 },
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 15 },
+                { wch: 15 },
+                { wch: 30 },
+                { wch: 15 }
+            ];
+
+            // Individual profession sheets
+            professions.forEach(profession => {
+                const profData = surveyData.filter(d => d.profession === profession);
+                
+                if (profData.length > 0) {
+                    const profHeaders = [['ক্রমিক', 'নাম', 'ফোন নম্বর', 'MyGP ব্যবহার', 'কারণ', 'তারিখ']];
+                    const profRows = profData.map((d, index) => [
+                        index + 1,
+                        d.name || '-',
+                        d.phoneNumber,
+                        d.useMyGP === 'yes' ? 'হ্যাঁ' : 'না',
+                        d.reason || '-',
+                        new Date(d.timestamp).toLocaleDateString('bn-BD')
+                    ]);
+
+                    const profSheet = XLSX.utils.aoa_to_sheet([...profHeaders, ...profRows]);
+                    profSheet['!cols'] = [
+                        { wch: 8 },
+                        { wch: 20 },
+                        { wch: 15 },
+                        { wch: 15 },
+                        { wch: 30 },
+                        { wch: 15 }
+                    ];
+
+                    XLSX.utils.book_append_sheet(wb, profSheet, profession);
+                }
+            });
+
+            // Add summary and all data sheets
+            XLSX.utils.book_append_sheet(wb, summarySheet, 'সামগ্রিক রিপোর্ট');
+            XLSX.utils.book_append_sheet(wb, allDataSheet, 'সকল ডেটা');
+
+            // Generate filename
+            const filename = `MyGP_Survey_Overall_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+            // Download
+            XLSX.writeFile(wb, filename);
+            
+            showToast('সম্পূর্ণ রিপোর্ট সফলভাবে ডাউনলোড হয়েছে!', 'success');
+        }
+
+        // Toast Notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            toast.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi ${type === 'success' ? 'bi-check-circle-fill text-success' : type === 'warning' ? 'bi-exclamation-triangle-fill text-warning' : type === 'error' ? 'bi-x-circle-fill text-danger' : 'bi-info-circle-fill text-info'} me-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Tab Change Animation
+        document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function() {
+                if (this.id === 'dashboard-tab') {
+                    updateCharts();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
