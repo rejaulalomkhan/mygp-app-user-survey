@@ -1,257 +1,197 @@
-# 📊 MyGP Survey Application
+# MyGP সার্ভে অ্যাপ্লিকেশন
 
-A professional survey application for collecting and analyzing MyGP app usage data across different professions. Built with modern web technologies and integrated with Google Sheets for real-time data synchronization.
+পেশাভিত্তিক MyGP ব্যবহার সার্ভে এবং রিপোর্টিং সিস্টেম
 
-## ✨ Features
+## 📋 প্রজেক্ট সম্পর্কে
 
-- 📱 **Real-time Data Sync** - Auto-refresh every 30 seconds
-- 📊 **Interactive Dashboard** - Visual statistics with charts
-- 👥 **Profession-based Reports** - Detailed analysis by profession
-- 📥 **Excel Export** - Download complete reports
-- 🎨 **Modern UI** - Beautiful design with Grameenphone colors
-- 📱 **Mobile Responsive** - Works perfectly on all devices
-- 🌐 **Bengali Language** - Full Solaiman Lipi font support
-- 💾 **Offline Support** - Works without internet using localStorage
+এই অ্যাপ্লিকেশনটি বিভিন্ন পেশার মানুষদের MyGP অ্যাপ ব্যবহার সম্পর্কে সার্ভে পরিচালনা এবং রিপোর্ট তৈরি করার জন্য ডিজাইন করা হয়েছে।
 
-## 🚀 Technologies Used
+## 🚀 ফিচারসমূহ
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **UI Framework**: Bootstrap 5.3
-- **Charts**: Chart.js
-- **Excel Export**: SheetJS (xlsx)
-- **Icons**: Bootstrap Icons
-- **Backend**: Google Apps Script
-- **Database**: Google Sheets
-- **Font**: Solaiman Lipi (Bengali)
+- ✅ সহজ এবং আকর্ষণীয় সার্ভে ফর্ম
+- 📊 রিয়েল-টাইম ড্যাশবোর্ড এবং চার্ট
+- 📈 পেশাভিত্তিক বিস্তারিত রিপোর্ট
+- 📥 এক্সেল রিপোর্ট ডাউনলোড
+- 🔄 Google Sheets এর সাথে সিঙ্ক
+- 💾 লোকাল স্টোরেজ সাপোর্ট (অফলাইন)
+- 🔄 অটো-রিফ্রেশ (প্রতি ৩০ সেকেন্ডে)
+- 📱 মোবাইল রেসপন্সিভ ডিজাইন
 
-## 📸 Screenshots
-
-<div align="center">
-
-### Application Interface
-
-<table>
-  <tr>
-    <td width="50%">
-      <img src="Screenshot_1.png" alt="Application Screenshot 1" width="100%" />
-      <p align="center"><b>Survey Form & Dashboard</b></p>
-    </td>
-    <td width="50%">
-      <img src="Screenshot_2.png" alt="Application Screenshot 2" width="100%" />
-      <p align="center"><b>Data Analytics</b></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <img src="Screenshot_3.png" alt="Application Screenshot 3" width="100%" />
-      <p align="center"><b>Profession Reports</b></p>
-    </td>
-    <td width="50%">
-      <img src="Screenshot_4.png" alt="Application Screenshot 4" width="100%" />
-      <p align="center"><b>All Entries View</b></p>
-    </td>
-  </tr>
-</table>
-
-</div>
-
-## 📋 Setup Instructions
-
-### Prerequisites
-
-- Google Account
-- Modern web browser
-- Internet connection for initial setup
-
-### Step 1: Google Spreadsheet Setup
-
-1. Create a new Google Spreadsheet
-2. Name the sheet: **"Sheet1"**
-3. Add headers in the first row:
-
-| A | B | C | D | E | F | G |
-|---|---|---|---|---|---|---|
-| ID | Name | Phone Number | Profession | Use MyGP | Reason | Timestamp |
-
-### Step 2: Google Apps Script Deployment
-
-1. Open your Google Spreadsheet
-2. Go to **Extensions → Apps Script**
-3. Delete any existing code
-4. Copy all code from `app-script-code.txt`
-5. Paste into the script editor
-6. Click **Save** (Ctrl+S)
-7. Click **Deploy → New deployment**
-8. Settings:
-   - Type: **Web app**
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-9. Click **Deploy**
-10. Authorize the script when prompted
-11. Copy the **Web App URL**
-
-### Step 3: Application Configuration
-
-1. Open `index.html`
-2. Find line 915:
-   ```javascript
-   const GOOGLE_SCRIPT_URL = "YOUR_URL_HERE";
-   ```
-3. Replace with your copied Web App URL
-4. Save the file
-
-### Step 4: Launch Application
-
-1. Open `index.html` in a web browser
-2. The application will automatically load data from Google Sheets
-3. Data refreshes every 30 seconds automatically
-
-## 🎯 Usage
-
-### Adding Survey Data
-
-1. Navigate to **সার্ভে ফর্ম** (Survey Form) tab
-2. Fill in the required information:
-   - Name (নাম)
-   - Phone Number (ফোন নম্বর)
-   - Profession (পেশা)
-   - MyGP Usage (MyGP ব্যবহার)
-   - Reason (কারণ)
-3. Click **সাবমিট করুন** (Submit)
-4. Data will be saved to Google Sheets
-5. Dashboard updates automatically
-
-### Viewing Analytics
-
-**Dashboard Tab (ড্যাশবোর্ড)**
-- Total surveyed count
-- MyGP users count
-- Ad viewers count
-- MB checkers count
-- Interactive charts
-
-**Profession Reports (পেশাভিত্তিক রিপোর্ট)**
-- View statistics by profession
-- Click any profession card for details
-- Download individual profession reports
-
-**All Entries (সকল এন্ট্রি)**
-- View all survey entries
-- Summary statistics cards
-- Full data table
-- Excel export functionality
-
-### Exporting Data
-
-1. Click the **এক্সেল ডাউনলোড** (Excel Download) button
-2. Excel file downloads with all data
-3. Includes proper Bengali text formatting
-4. Opens in Excel, Google Sheets, or LibreOffice
-
-## 📂 Project Structure
+## 📁 প্রজেক্ট স্ট্রাকচার
 
 ```
 mygp-survey/
-├── index.html              # Main application file
-├── app-script-code.txt     # Google Apps Script code
-├── README.md              # Project documentation
-├── assets/
-│   ├── bclgroup-lgoo.png  # BCL Group logo
-│   └── Grameenphone_Logo.png  # Grameenphone logo
-└── screenshots/           # Application screenshots
+│
+├── index.html              # মূল HTML ফাইল
+├── README.md              # ডকুমেন্টেশন
+├── app-script-code.txt    # Google Apps Script কোড
+│
+├── css/
+│   └── style.css          # কাস্টম CSS স্টাইল
+│
+├── js/
+│   ├── app.js             # মূল JavaScript লজিক
+│   └── config.js          # কনফিগারেশন (optional)
+│
+└── assets/
+    ├── bclgroup-lgoo.png  # BCL Group লোগো
+    └── Grameenphone_Logo.png  # Grameenphone লোগো
 ```
 
-## 🔄 Auto-Refresh Feature
+## 🛠️ টেকনোলজি
 
-The application automatically refreshes data every 30 seconds:
-- Runs in background (silent mode)
-- No interruption to user
-- Always shows latest data
-- Manual refresh buttons available in all tabs
+### Frontend
+- **HTML5** - Semantic markup
+- **CSS3** - Custom styling with animations
+- **JavaScript (ES6+)** - Modern JavaScript
+- **Bootstrap 5.3** - Responsive framework
+- **Bootstrap Icons** - Icon library
+- **Chart.js** - Data visualization
+- **SheetJS (xlsx)** - Excel file generation
 
-## 🎨 Design Highlights
+### Backend
+- **Google Apps Script** - Server-side logic
+- **Google Sheets** - Data storage
 
-- **Color Scheme**: Grameenphone blue (#00b0f0) and BCL green (#00a651)
-- **Typography**: Solaiman Lipi for Bengali text
-- **Icons**: Left-aligned in summary cards
-- **Responsive**: Optimized for desktop, tablet, and mobile
-- **User Experience**: Smooth animations and transitions
+### Fonts
+- **SolaimanLipi** - Bengali font support
 
-## 🛠️ Development
+## 📦 ইনস্টলেশন
 
-### Local Development
+### 1. লোকাল সেটআপ
 
-Simply open `index.html` in a browser. No build process required.
+```bash
+# প্রজেক্ট ক্লোন করুন
+git clone <repository-url>
 
-### Debugging
+# প্রজেক্ট ডিরেক্টরিতে যান
+cd mygp-survey
 
-1. Open browser DevTools (F12)
-2. Check Console for logs:
-   ```
-   === Loading data from Google Sheets ===
-   ✓ Survey data loaded successfully!
-   ```
-3. View network requests for API calls
+# যেকোনো লোকাল সার্ভার দিয়ে চালান
+# উদাহরণ: Live Server, XAMPP, WAMP, Laragon ইত্যাদি
+```
 
-## 🐛 Troubleshooting
+### 2. Google Sheets সেটআপ
 
-### Data not loading?
+1. Google Sheets এ নতুন স্প্রেডশিট তৈরি করুন
+2. `Extensions` > `Apps Script` এ যান
+3. `app-script-code.txt` থেকে কোড কপি করে পেস্ট করুন
+4. `Deploy` > `New deployment` ক্লিক করুন
+5. `Web app` সিলেক্ট করুন
+6. `Who has access` এ `Anyone` সিলেক্ট করুন
+7. Web App URL কপি করুন
 
-1. Check browser console (F12) for errors
-2. Verify Google Apps Script URL is correct
-3. Ensure Apps Script is deployed with "Anyone" access
-4. Check Google Sheets "Sheet1" name is correct
+### 3. কনফিগারেশন
 
-### CORS errors?
+`js/app.js` ফাইলে Google Script URL আপডেট করুন:
 
-- Apps Script URL must end with `/exec`
-- Re-deploy the Apps Script
-- Clear browser cache
+```javascript
+const GOOGLE_SCRIPT_URL = "আপনার_Google_Script_URL_এখানে_পেস্ট_করুন";
+```
 
-### Data not updating?
+## 💡 ব্যবহারবিধি
 
-- Wait 30 seconds for auto-refresh
-- Click manual refresh button
-- Check Apps Script execution logs
+### সার্ভে ফর্ম
+1. **নাম** - সার্ভে অংশগ্রহণকারীর নাম লিখুন
+2. **ফোন নম্বর** - ফোন নম্বর প্রবেশ করুন (ক্লিক করলে স্বয়ংক্রিয়ভাবে "88" যুক্ত হবে)
+3. **পেশা** - ড্রপডাউন থেকে পেশা নির্বাচন করুন
+4. **MyGP ব্যবহার** - হ্যাঁ/না সিলেক্ট করুন
+5. **কারণ** - "হ্যাঁ" সিলেক্ট করলে কারণ নির্বাচন করতে হবে
+6. **সাবমিট** - ফর্ম সাবমিট করুন
 
-## 📊 Data Privacy
+### ড্যাশবোর্ড
+- মোট সার্ভেকৃত সংখ্যা দেখুন
+- MyGP ব্যবহারকারীর সংখ্যা দেখুন
+- পেশাভিত্তিক চার্ট দেখুন
+- ব্যবহারের কারণ চার্ট দেখুন
 
-- Data stored in your Google Spreadsheet
-- You have full control over the data
-- No third-party storage
-- Secure Google authentication
+### রিপোর্ট
+- প্রতিটি পেশার জন্য আলাদা রিপোর্ট দেখুন
+- পেশাভিত্তিক বিস্তারিত তথ্য এক্সেল ডাউনলোড করুন
 
-## 🤝 Credits
+### এক্সেল ডাউনলোড
+- **সকল এন্ট্রি ডাউনলোড** - এন্ট্রি পেজে রিফ্রেশ বাটনের পাশের সবুজ বাটন
+- **পেশাভিত্তিক রিপোর্ট** - রিপোর্ট ট্যাবে প্রতিটি পেশার কার্ডে ক্লিক করুন
+- **সামগ্রিক রিপোর্ট** - ফ্লোটিং ডাউনলোড বাটন (নিচে ডানে)
 
-**Developed by:** Arman Azij  
-**Link:** [https://fb.com/armanaazij](https://fb.com/armanaazij)
+## ⚙️ কনফিগারেশন অপশন
 
-**For:** BCL Group  
-**Client:** Grameenphone
+### Auto-refresh
+`js/app.js` ফাইলে auto-refresh interval পরিবর্তন করুন:
 
-## 📄 License
+```javascript
+autoRefreshInterval = setInterval(function() {
+    loadFromGoogleSheets(false);
+}, 30000); // মিলিসেকেন্ডে (30000 = 30 seconds)
+```
 
-This project is developed for internal use by BCL Group for Grameenphone survey purposes.
+### পেশার তালিকা
+প্রয়োজনে পেশার তালিকা যোগ/সম্পাদনা করুন:
+- `index.html` - Form select options
+- `js/app.js` - `generateProfessionReports()` ফাংশন
 
-## 🔗 Links
+## 🎨 কাস্টমাইজেশন
 
-- **Repository**: [https://github.com/rejaulalomkhan/mygp-app-user-survey](https://github.com/rejaulalomkhan/mygp-app-user-survey)
-- **Issues**: Report bugs or request features
-- **Developer**: [Facebook Profile](https://fb.com/armanaazij)
+### রঙ পরিবর্তন
+`css/style.css` ফাইলে CSS variables আপডেট করুন:
 
-## 📞 Support
+```css
+:root {
+    --primary-color: #00b0f0;
+    --gp-blue: #00b0f0;
+    --bcl-green: #00a651;
+    --gradient: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%);
+}
+```
 
-For support or questions:
-1. Check the console logs (F12)
-2. Review Apps Script execution logs
-3. Contact the developer
+### ফন্ট পরিবর্তন
+`index.html` এ ফন্ট লিংক পরিবর্তন করুন এবং `css/style.css` এ `font-family` আপডেট করুন।
+
+## 📱 রেসপন্সিভ ডিজাইন
+
+- ডেস্কটপ (1400px+) - Full features
+- ট্যাবলেট (768px-1399px) - Adjusted layout
+- মোবাইল (<768px) - Compact view
+
+## 🐛 ট্রাবলশুটিং
+
+### ডেটা লোড হচ্ছে না
+1. ইন্টারনেট সংযোগ চেক করুন
+2. Google Script URL সঠিক আছে কিনা যাচাই করুন
+3. Google Apps Script deployment সঠিক আছে কিনা দেখুন
+4. Browser console (F12) চেক করুন
+
+### Excel ডাউনলোড কাজ করছে না
+1. SheetJS library লোড হয়েছে কিনা চেক করুন
+2. Browser console এ error আছে কিনা দেখুন
+3. Data আছে কিনা নিশ্চিত করুন
+
+## 🔒 সিকিউরিটি
+
+- Google Sheets এ sensitive data সংরক্ষণের ক্ষেত্রে সতর্কতা অবলম্বন করুন
+- Production এ deploy করার আগে access permissions যাচাই করুন
+- নিয়মিত data backup রাখুন
+
+## 📞 সাপোর্ট
+
+সমস্যা বা প্রশ্নের জন্য যোগাযোগ করুন:
+- **Developer**: Arman Azij
+- **Facebook**: [fb.com/armanaazij](https://fb.com/armanaazij)
+
+## 📄 লাইসেন্স
+
+This project is developed for BCL Group and Grameenphone survey purposes.
+
+## 🙏 স্বীকৃতি
+
+- **BCL Group** - Project sponsor
+- **Grameenphone** - Brand partnership
+- **Bootstrap Team** - UI Framework
+- **Chart.js Team** - Charting library
+- **SheetJS Team** - Excel generation
 
 ---
 
-<div align="center">
-
-**Made with ❤️ for BCL Group & Grameenphone**
-
-⭐ Star this repo if you find it useful!
-
-</div>
+**Version**: 2.0  
+**Last Updated**: November 2025  
+**Status**: ✅ Production Ready

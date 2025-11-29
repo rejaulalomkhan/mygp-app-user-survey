@@ -1,8 +1,9 @@
-# OS
+# OS Files
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Editor
+# Editor directories and files
 .vscode/
 .idea/
 *.swp
@@ -11,8 +12,34 @@ Thumbs.db
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build files
+dist/
+build/
+
+# Dependencies (if using npm/yarn)
+node_modules/
+package-lock.json
+yarn.lock
 
 # Temporary files
 *.tmp
-*.bak
+*.temp
 
+# Backup files
+*.bak
+*.backup
+*~
+
+# Screenshots (optional - comment out if you want to keep them)
+# Screenshot_*.png
