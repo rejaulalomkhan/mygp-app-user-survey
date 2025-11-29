@@ -721,11 +721,6 @@
                     <i class="bi bi-graph-up"></i>  রিপোর্ট
                 </button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="all-entries-tab" data-bs-toggle="tab" data-bs-target="#all-entries" type="button">
-                    <i class="bi bi-table"></i> সকল এন্ট্রি
-                </button>
-            </li>
         </ul>
 
         <!-- Tab Content -->
@@ -801,9 +796,14 @@
                 <div class="glass-card mt-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="mb-0"><i class="bi bi-list-check"></i> সকল এন্ট্রি</h4>
-                        <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
-                            <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
-                        </button>
+                        <div>
+                            <button class="btn btn-success btn-sm me-2" onclick="downloadAllEntriesExcel()" title="এক্সেল ডাউনলোড">
+                                <i class="bi bi-file-earmark-excel"></i> এক্সেল ডাউনলোড
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
+                                <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Summary Stats -->
@@ -981,113 +981,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- All Entries Tab -->
-            <div class="tab-pane fade" id="all-entries" role="tabpanel">
-                <div class="glass-card">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 class="mb-0"><i class="bi bi-table"></i> সকল এন্ট্রি</h3>
-                        <div>
-                            <button class="btn btn-success btn-sm me-2" onclick="downloadAllEntriesExcel()" title="এক্সেল ডাউনলোড">
-                                <i class="bi bi-file-earmark-excel"></i> এক্সেল ডাউনলোড
-                            </button>
-                            <button class="btn btn-info btn-sm me-2" onclick="debugAllData()" title="Debug Data">
-                                <i class="bi bi-bug"></i> Debug
-                            </button>
-                            <button class="btn btn-primary btn-sm" onclick="loadFromGoogleSheets()" title="রিফ্রেশ করুন">
-                                <i class="bi bi-arrow-clockwise"></i> রিফ্রেশ
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Summary Cards -->
-                    <div class="row mb-4">
-                        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #00b0f0; padding: 15px;">
-                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
-                                    <i class="bi bi-list-ol text-primary fs-3"></i>
-                                </div>
-                                <div class="stat-card-content">
-                                    <div class="stat-number" id="allTotalEntries" style="font-size: 1.8rem;">0</div>
-                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">মোট এন্ট্রি</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #00a651; padding: 15px;">
-                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
-                                    <i class="bi bi-check-circle-fill text-success fs-3"></i>
-                                </div>
-                                <div class="stat-card-content">
-                                    <div class="stat-number" id="allMyGPUsers" style="font-size: 1.8rem;">0</div>
-                                    <p class="text-muted mb-0" style="font-size: 0.9rem;">MyGP ব্যবহারকারী</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #6f42c1; padding: 15px;">
-                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
-                                    <i class="bi bi-database-fill fs-3" style="color: #6f42c1;"></i>
-                                </div>
-                                <div class="stat-card-content">
-                                    <div class="stat-number" id="mbCheckersCount" style="font-size: 1.8rem;">0</div>
-                                    <small class="text-muted" id="mbCheckersPercentage">0%</small>
-                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">মিনিট/ডাটা</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #e83e8c; padding: 15px;">
-                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
-                                    <i class="bi bi-badge-ad-fill fs-3" style="color: #e83e8c;"></i>
-                                </div>
-                                <div class="stat-card-content">
-                                    <div class="stat-number" id="adViewersCount" style="font-size: 1.8rem;">0</div>
-                                    <small class="text-muted" id="adViewersPercentage">0%</small>
-                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">সোশ্যাল এড</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="stat-card" style="border-left-color: #20c997; padding: 15px;">
-                                <div class="stat-card-icon" style="width: 50px; height: 50px;">
-                                    <i class="bi bi-check2-all fs-3" style="color: #20c997;"></i>
-                                </div>
-                                <div class="stat-card-content">
-                                    <div class="stat-number" id="bothReasonsCount" style="font-size: 1.8rem;">0</div>
-                                    <small class="text-muted" id="bothReasonsPercentage">0%</small>
-                                    <p class="text-muted mb-0" style="font-size: 0.8rem;">উভয়</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- All Entries Table -->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover" id="allEntriesTable">
-                            <thead style="background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%); color: white;">
-                                <tr>
-                                    <th>ক্রমিক</th>
-                                    <th>নাম</th>
-                                    <th>ফোন নম্বর</th>
-                                    <th>পেশা</th>
-                                    <th>MyGP ব্যবহার</th>
-                                    <th>কারণ</th>
-                                    <th>তারিখ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="allEntriesTableBody">
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted py-5">
-                                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                        কোন ডেটা নেই
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Footer -->
@@ -1139,6 +1032,14 @@
             
             // Auto-refresh: প্রতি 30 সেকেন্ডে ডেটা লোড করা
             startAutoRefresh();
+            
+            // Phone number input এ ফোকাস করলে "88" যুক্ত করা
+            const phoneInput = document.getElementById('phoneNumber');
+            phoneInput.addEventListener('focus', function() {
+                if (this.value === '') {
+                    this.value = '88';
+                }
+            });
         });
 
         // Auto-refresh শুরু করা
@@ -1380,6 +1281,10 @@
         // Animate Numbers
         function animateNumber(elementId, target) {
             const element = document.getElementById(elementId);
+            if (!element) {
+                console.warn(`Element with id '${elementId}' not found`);
+                return;
+            }
             const start = parseInt(element.textContent) || 0;
             const increment = (target - start) / 20;
             let current = start;
@@ -1397,6 +1302,13 @@
 
         // Update All Entries Tab
         function updateAllEntriesTab() {
+            // Check if the "All Entries" tab exists (it was removed)
+            const tbody = document.getElementById('allEntriesTableBody');
+            if (!tbody) {
+                console.log('All Entries Tab removed - skipping update');
+                return;
+            }
+            
             const totalEntries = surveyData.length;
             const myGPUsers = surveyData.filter(d => d.useMyGP === 'yes').length;
             
@@ -1454,9 +1366,6 @@
             } else {
                 console.error('bothReasonsPercentage element not found!');
             }
-
-            // Update table
-            const tbody = document.getElementById('allEntriesTableBody');
             
             if (surveyData.length === 0) {
                 tbody.innerHTML = `
