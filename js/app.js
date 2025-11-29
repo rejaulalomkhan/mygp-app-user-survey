@@ -172,6 +172,38 @@ async function loadFromGoogleSheets(showNotification = true) {
 }
 
 // ============================================
+// UTILITY FUNCTIONS
+// ============================================
+/**
+ * Normalize phone number for comparison
+ * Removes spaces, dashes, plus signs, country codes, and leading zeros
+ * @param {string} phone - Phone number to normalize
+ * @returns {string} - Normalized phone number
+ */
+function normalizePhoneNumber(phone) {
+    if (!phone) return '';
+    return phone
+        .replace(/[-\s+]/g, '')   // Remove dashes, spaces, plus signs
+        .replace(/^880/, '')     // Remove country code 880
+        .replace(/^88/, '')       // Remove 88 prefix if exists
+        .replace(/^0/, '');       // Remove leading 0
+}
+
+/**
+ * Check if phone number already exists in survey data
+ * @param {string} phoneNumber - Phone number to check
+ * @returns {boolean} - True if duplicate exists
+ */
+function isDuplicatePhoneNumber(phoneNumber) {
+    const normalizedPhone = normalizePhoneNumber(phoneNumber);
+    return surveyData.some(entry => {
+        if (!entry.phoneNumber) return false;
+        const existingPhone = normalizePhoneNumber(entry.phoneNumber);
+        return existingPhone === normalizedPhone;
+    });
+}
+
+// ============================================
 // FORM HANDLERS
 // ============================================
 function initializeFormHandlers() {
@@ -179,13 +211,28 @@ function initializeFormHandlers() {
     document.getElementById('surveyForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        
+        // Check for duplicate phone number
+        if (isDuplicatePhoneNumber(phoneNumber)) {
+            showToast(CONFIG.MESSAGES.ERROR.DUPLICATE_PHONE, 'error');
+            // Highlight the phone input field
+            const phoneInput = document.getElementById('phoneNumber');
+            phoneInput.focus();
+            phoneInput.style.borderColor = '#dc3545';
+            setTimeout(() => {
+                phoneInput.style.borderColor = '';
+            }, 3000);
+            return; // Stop form submission
+        }
+        
         // Show loader
         showLoader();
         
         const formData = {
             id: Date.now(),
             name: document.getElementById('name').value,
-            phoneNumber: document.getElementById('phoneNumber').value,
+            phoneNumber: phoneNumber,
             profession: document.getElementById('profession').value,
             useMyGP: document.querySelector('input[name="useMyGP"]:checked').value,
             reason: document.getElementById('reason').value,
@@ -194,7 +241,7 @@ function initializeFormHandlers() {
 
         // Save to localStorage first
         surveyData.push(formData);
-        localStorage.setItem('surveyData', JSON.stringify(surveyData));
+        localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(surveyData));
         
         // Try to send data to Google Sheets
         try {
