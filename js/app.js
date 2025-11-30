@@ -78,7 +78,30 @@ function stopAutoRefresh() {
 // ============================================
 // DATA LOADING FROM GOOGLE SHEETS
 // ============================================
-async function loadFromGoogleSheets(showNotification = true) {
+/**
+ * Refresh data with loader (called from refresh buttons)
+ */
+async function refreshDataWithLoader() {
+    try {
+        showLoader('ডাটা লোড হচ্ছে...', 'অনুগ্রহ করে অপেক্ষা করুন');
+        await loadFromGoogleSheets(true, false); // Don't show loader again, already shown
+        // Loader will be hidden in loadFromGoogleSheets() before showing toast
+    } catch (error) {
+        console.error('Error refreshing data:', error);
+        // Hide loader on unexpected error
+        const loaderOverlay = document.getElementById('loaderOverlay');
+        if (loaderOverlay && loaderOverlay.classList.contains('show')) {
+            hideLoader();
+        }
+    }
+}
+
+async function loadFromGoogleSheets(showNotification = true, showLoaderOverlay = false) {
+    // Show loader if requested (usually for manual refresh)
+    if (showLoaderOverlay) {
+        showLoader();
+    }
+    
     try {
         console.log('=== Loading data from Google Sheets ===');
         console.log('URL:', `${GOOGLE_SCRIPT_URL}?action=getData`);
@@ -123,6 +146,16 @@ async function loadFromGoogleSheets(showNotification = true) {
                     updateAllEntriesTab();
                     updateSurveyFormTable();
                     
+                    // Hide loader BEFORE showing toast notification
+                    // Check if loader was shown (either by showLoaderOverlay or by refreshDataWithLoader)
+                    const loaderOverlay = document.getElementById('loaderOverlay');
+                    if (loaderOverlay && loaderOverlay.classList.contains('show')) {
+                        hideLoader();
+                    }
+                    
+                    console.log('=== Data loading completed successfully ===');
+                    
+                    // Show toast notification after loader is hidden
                     if (showNotification) {
                         if (surveyData.length > oldLength) {
                             showToast(`✓ ${surveyData.length} টি এন্ট্রি লোড হয়েছে (${surveyData.length - oldLength} টি নতুন)`, 'success');
@@ -130,15 +163,23 @@ async function loadFromGoogleSheets(showNotification = true) {
                             showToast(`✓ ${surveyData.length} টি এন্ট্রি লোড হয়েছে`, 'success');
                         }
                     }
-                    
-                    console.log('=== Data loading completed successfully ===');
                 } else if (data.status === "error") {
                     console.error('Server returned error:', data.message);
+                    // Hide loader BEFORE showing toast
+                    const loaderOverlay = document.getElementById('loaderOverlay');
+                    if (loaderOverlay && loaderOverlay.classList.contains('show')) {
+                        hideLoader();
+                    }
                     if (showNotification) {
                         showToast('সার্ভার এরর: ' + data.message, 'error');
                     }
                 } else {
                     console.warn('Invalid data format:', data);
+                    // Hide loader BEFORE showing toast
+                    const loaderOverlay = document.getElementById('loaderOverlay');
+                    if (loaderOverlay && loaderOverlay.classList.contains('show')) {
+                        hideLoader();
+                    }
                     if (showNotification) {
                         showToast('ডেটা ফরম্যাট সঠিক নয়', 'warning');
                     }
@@ -146,6 +187,11 @@ async function loadFromGoogleSheets(showNotification = true) {
             } catch (parseError) {
                 console.error('❌ JSON parse error:', parseError);
                 console.error('Response text:', textResponse);
+                // Hide loader BEFORE showing toast
+                const loaderOverlay = document.getElementById('loaderOverlay');
+                if (loaderOverlay && loaderOverlay.classList.contains('show')) {
+                    hideLoader();
+                }
                 if (showNotification) {
                     showToast('সার্ভার থেকে সঠিক JSON ডেটা আসেনি', 'error');
                 }
@@ -155,6 +201,11 @@ async function loadFromGoogleSheets(showNotification = true) {
             console.error('❌ Response not OK');
             console.error('Status:', response.status);
             console.error('Error text:', errorText);
+            // Hide loader BEFORE showing toast
+            const loaderOverlay = document.getElementById('loaderOverlay');
+            if (loaderOverlay && loaderOverlay.classList.contains('show')) {
+                hideLoader();
+            }
             if (showNotification) {
                 showToast(`সার্ভার এরর (${response.status})`, 'error');
             }
@@ -163,6 +214,12 @@ async function loadFromGoogleSheets(showNotification = true) {
         console.error("❌ Google Sheets থেকে ডেটা লোড করতে সমস্যা:");
         console.error("Error message:", error.message);
         console.error("Error stack:", error.stack);
+        
+        // Hide loader BEFORE showing toast
+        const loaderOverlay = document.getElementById('loaderOverlay');
+        if (loaderOverlay && loaderOverlay.classList.contains('show')) {
+            hideLoader();
+        }
         
         // Only show error on manual refresh
         if (showNotification) {
@@ -301,8 +358,15 @@ function initializeFormHandlers() {
 // ============================================
 // LOADER FUNCTIONS
 // ============================================
-function showLoader() {
-    document.getElementById('loaderOverlay').classList.add('show');
+function showLoader(message = 'সাবমিট হচ্ছে...', subtext = 'অনুগ্রহ করে অপেক্ষা করুন') {
+    const loaderOverlay = document.getElementById('loaderOverlay');
+    const loaderText = loaderOverlay.querySelector('.loader-text');
+    const loaderSubtext = loaderOverlay.querySelector('.loader-subtext');
+    
+    if (loaderText) loaderText.textContent = message;
+    if (loaderSubtext) loaderSubtext.textContent = subtext;
+    
+    loaderOverlay.classList.add('show');
 }
 
 function hideLoader() {
